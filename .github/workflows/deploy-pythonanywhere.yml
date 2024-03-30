@@ -9,28 +9,24 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Install PythonAnywhere API client
-      run: pip install pythonanywhere
+      - name: Copy files
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.PYTHONANYWHERE_HOST }}
+          username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+          password: ${{ secrets.PYTHONANYWHERE_PASSWORD }}
+          source: "."
+          target: "/home/${{ secrets.PYTHONANYWHERE_USERNAME }}/"
 
-    - name: Deploy to PythonAnywhere
-      run: |
-        python -c "
-        import pythonanywhere as pa
-        user = pa.User('${{ secrets.PYTHONANYWHERE_USERNAME }}', '${{ secrets.PYTHONANYWHERE_API_TOKEN }}')
-        user.create_file('/home/${{ secrets.PYTHONANYWHERE_USERNAME }}/chatbot.py')
-        with open('chatbot.py', 'r') as local_file, open(user.files['/home/${{ secrets.PYTHONANYWHERE_USERNAME }}/chatbot.py'], 'w') as pa_file:
-            pa_file.write(local_file.read())
-        "
-
-    - name: Run bot on PythonAnywhere
-      run: |
-        python -c "
-        import pythonanywhere as pa
-        user = pa.User('${{ secrets.PYTHONANYWHERE_USERNAME }}', '${{ secrets.PYTHONANYWHERE_API_TOKEN }}')
-        user.run_bash_console_command('python3 chatbot.py')
-        "
+      - name: Run script
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PYTHONANYWHERE_HOST }}
+          username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+          password: ${{ secrets.PYTHONANYWHERE_PASSWORD }}
+          script: python3 /home/${{ secrets.PYTHONANYWHERE_USERNAME }}/chatbot.py
 
 
