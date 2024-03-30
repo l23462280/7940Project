@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Install PythonAnywhere API client
       run: pip install pythonanywhere
@@ -20,15 +20,17 @@ jobs:
         python -c "
         import pythonanywhere as pa
         user = pa.User('${{ secrets.PYTHONANYWHERE_USERNAME }}', '${{ secrets.PYTHONANYWHERE_API_TOKEN }}')
-        user.create_webapp('yuriko992.pythonanywhere.com', python_version='3.11')
-        user.webapps['yuriko992.pythonanywhere.com'].add_static_mapping(
-            url='/static/', 
-            path='/home/${{ secrets.PYTHONANYWHERE_USERNAME }}/yourapp/static/'
-        )
-        user.webapps['yuriko992.pythonanywhere.com'].add_wsgi_configuration_file(
-            '/home/${{ secrets.PYTHONANYWHERE_USERNAME }}/yourapp/wsgi.py'
-        )
-        user.webapps['yuriko992.pythonanywhere.com'].reload()
+        user.create_file('/home/${{ secrets.PYTHONANYWHERE_USERNAME }}/chatbot.py')
+        with open('chatbot.py', 'r') as local_file, open(user.files['/home/${{ secrets.PYTHONANYWHERE_USERNAME }}/chatbot.py'], 'w') as pa_file:
+            pa_file.write(local_file.read())
+        "
+
+    - name: Run bot on PythonAnywhere
+      run: |
+        python -c "
+        import pythonanywhere as pa
+        user = pa.User('${{ secrets.PYTHONANYWHERE_USERNAME }}', '${{ secrets.PYTHONANYWHERE_API_TOKEN }}')
+        user.run_bash_console_command('python3 chatbot.py')
         "
 
 
