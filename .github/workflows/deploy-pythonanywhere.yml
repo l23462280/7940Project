@@ -12,23 +12,32 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install PythonAnywhere API client
-      run: pip install pythonanywhere
+    - name: Install requests module
+      run: pip install requests
 
     - name: Deploy to PythonAnywhere
       run: |
         python -c "
-        from pythonanywhere.api import AuthenticatedUser
-        user = AuthenticatedUser('${{ secrets.PYTHONANYWHERE_USERNAME }}', '${{ secrets.PYTHONANYWHERE_API_TOKEN }}')
-        user.create_webapp('yuriko992.pythonanywhere.com', python_version='3.11')
-        user.webapps['yuriko992.pythonanywhere.com'].add_static_mapping(
-            url='/static/', 
-            path='/home/${{ secrets.PYTHONANYWHERE_USERNAME }}/yourapp/static/'
+        import requests
+
+        username = '${{ secrets.PYTHONANYWHERE_USERNAME }}'
+        api_token = '${{ secrets.PYTHONANYWHERE_API_TOKEN }}'
+        domain_name = 'yuriko992.pythonanywhere.com'
+        python_version = '3.11'
+
+        response = requests.post(
+            f'https://www.pythonanywhere.com/api/v0/user/{username}/webapps/{domain_name}/',
+            headers={'Authorization': f'Token {api_token}'},
+            data={'python_version': python_version}
         )
-        user.webapps['yuriko992.pythonanywhere.com'].add_wsgi_configuration_file(
-            '/home/${{ secrets.PYTHONANYWHERE_USERNAME }}/yourapp/wsgi.py'
-        )
-        user.webapps['yuriko992.pythonanywhere.com'].reload()"
+
+        # Check if the web app was created successfully
+        if response.status_code == 201:
+            print('Web app created successfully')
+        else:
+            print(f'Failed to create web app: {response.content}')
+
         "
+
 
 
