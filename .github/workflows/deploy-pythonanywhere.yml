@@ -31,6 +31,10 @@ jobs:
           host: ${{ secrets.PYTHONANYWHERE_HOST }}
           username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
           password: ${{ secrets.PYTHONANYWHERE_PASSWORD }}
-          script: python3 /home/${{ secrets.PYTHONANYWHERE_USERNAME }}/chatbot.py
+          script: |
+            export API_KEY=$API_KEY
+            export MONGODB_URL=$MONGODB_URL
+            export ACCESS_TOKEN_TG=$ACCESS_TOKEN_TG
+            python3 /home/${{ secrets.PYTHONANYWHERE_USERNAME }}/chatbot.py
 
 
