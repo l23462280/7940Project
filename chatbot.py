@@ -1,6 +1,4 @@
 import asyncio
-from asyncore import dispatcher
-import configparser
 import fastapi_poe as fp
 import pymongo
 from telegram import Update, constants, error, InlineKeyboardMarkup, InlineKeyboardButton
