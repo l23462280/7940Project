@@ -1,6 +1,6 @@
 import asyncio
 from asyncore import dispatcher
-
+import configparser
 import fastapi_poe as fp
 import pymongo
 from telegram import Update, constants, error, InlineKeyboardMarkup, InlineKeyboardButton
@@ -215,7 +215,9 @@ def db_connection():
 
 
 def main():
-    application = Application.builder().token("6940947579:AAFMTswa9lwmhP6KzD_QU1B4kxoLvaYN6a0").build()
+    telegram_access_token = os.getenv('TELEGRAM_ACCESS_TOKEN')
+
+    application = Application.builder().token(telegram_access_token).build()
 
     start_handler = CommandHandler('start', start)
     application.add_handler(start_handler)
