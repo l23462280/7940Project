@@ -215,7 +215,7 @@ def db_connection():
 
 
 def main():
-    application = Application.builder().token(os.environ['ACCESS_TOKEN_TG']).build()
+    application = Application.builder().token(os.environ['TELEGRAM_ACCESS_TOKEN']).build()
 
     start_handler = CommandHandler('start', start)
     application.add_handler(start_handler)
