@@ -216,6 +216,10 @@ def db_connection():
 
 def main():
     telegram_access_token = os.getenv('TELEGRAM_ACCESS_TOKEN')
+    if 'TELEGRAM_ACCESS_TOKEN' in os.environ:
+        print('TELEGRAM_ACCESS_TOKEN is set')
+    else:
+        print('TELEGRAM_ACCESS_TOKEN is not set')
     application = Application.builder().token(telegram_access_token).build()
 
     start_handler = CommandHandler('start', start)
