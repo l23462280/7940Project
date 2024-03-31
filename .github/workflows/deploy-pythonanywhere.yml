@@ -35,9 +35,12 @@ jobs:
             export API_KEY=$API_KEY
             export MONGODB_URL=$MONGODB_URL
             export TELEGRAM_ACCESS_TOKEN=$TELEGRAM_ACCESS_TOKEN
-            echo $API_KEY
-            echo $MONGODB_URL
-            echo $TELEGRAM_ACCESS_TOKEN
             python3 /home/${{ secrets.PYTHONANYWHERE_USERNAME }}/chatbot.py
 
+      - name: Debug API_KEY
+        run: echo $API_KEY
+      - name: Debug MONGODB_URL
+        run: echo $MONGODB_URL
+      - name: Debug TELEGRAM_ACCESS_TOKEN
+        run: echo $TELEGRAM_ACCESS_TOKEN
 
