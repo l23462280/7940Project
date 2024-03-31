@@ -27,7 +27,7 @@ jobs:
           host: ${{ secrets.PYTHONANYWHERE_HOST }}
           username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
           password: ${{ secrets.PYTHONANYWHERE_PASSWORD }}
-          script: pkill -f python3
+          script: pkill -f python3 || true
 
       - name: Run script
         uses: appleboy/ssh-action@master
