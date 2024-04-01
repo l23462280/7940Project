@@ -33,6 +33,9 @@ jobs:
           username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
           password: ${{ secrets.PYTHONANYWHERE_PASSWORD }}
           script: |
+            export API_KEY=${{ secrets.API_KEY }}
+            export MONGODB_URL=${{ secrets.MONGODB_URL }}
+            export TELEGRAM_ACCESS_TOKEN=${{ secrets.TELEGRAM_ACCESS_TOKEN }}
             curl -H "Authorization: Token ${PYTHONANYWHERE_API_TOKEN}" -X POST https://www.pythonanywhere.com/api/v0/user/${{ secrets.PYTHONANYWHERE_USERNAME }}/always-on/restart/
   
   
