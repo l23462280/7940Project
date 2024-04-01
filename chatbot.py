@@ -5,7 +5,9 @@ from telegram import Update, constants, error, InlineKeyboardMarkup, InlineKeybo
 from telegram.ext import Application, MessageHandler, filters, CommandHandler, CallbackQueryHandler
 import logging
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class GetUpdatesFilter(logging.Filter):
     def filter(self, record):
@@ -27,7 +29,7 @@ class CustomHandler(logging.Handler):
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', handlers=[CustomHandler()])
 
 # Replace <api_key> with your actual API key, ensuring it is a string.
-api_key = os.environ['API_KEY']
+api_key = os.getenv['API_KEY']
 bot_names = {
     'Web-Search': 'textbook231'
 }
@@ -204,7 +206,7 @@ def insert_infor(information,userID,ct):
     c.insert_one(information)
 
 def db_connection():
-    mongoDB_conn = os.environ['MONGODB_URL']
+    mongoDB_conn = os.getenv['MONGODB_URL']
     myclient = pymongo.MongoClient(mongoDB_conn)
     db = myclient['7940_group']
     col = db['chat_bot']
