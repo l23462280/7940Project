@@ -12,10 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Install requirements
         run: |
           python -m pip install --upgrade pip
-          pip install fastapi_poe
+          pip install -r requirements.txt
 
       - name: Copy files
         uses: appleboy/scp-action@master
@@ -40,5 +40,5 @@ jobs:
             export API_KEY=${{ secrets.API_KEY }}
             export MONGODB_URL=${{ secrets.MONGODB_URL }}
             export TELEGRAM_ACCESS_TOKEN=${{ secrets.TELEGRAM_ACCESS_TOKEN }}
-            python3 /home/${{ secrets.PYTHONANYWHERE_USERNAME }}/chatbot.py
+            nohup python3 /home/${{ secrets.PYTHONANYWHERE_USERNAME }}/chatbot.py &
 
