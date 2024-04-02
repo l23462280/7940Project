@@ -231,6 +231,9 @@ def main():
     application.add_handler(question)
     ans = CallbackQueryHandler(answer)
     application.add_handler(ans)
+    gob = CommandHandler('back', go_back)
+    application.add_handler(gob)
+
 
 
     message_handler = MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
