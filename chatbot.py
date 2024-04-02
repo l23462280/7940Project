@@ -207,6 +207,7 @@ def insert_infor(information,userID,ct):
 
 def db_connection():
     mongoDB_conn = os.getenv('MONGODB_URL')
+    print(f'MongoDB connection URL: {mongoDB_conn}') 
     myclient = pymongo.MongoClient(mongoDB_conn)
     db = myclient['7940_group']
     col = db['chat_bot']
