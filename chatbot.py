@@ -206,12 +206,15 @@ def insert_infor(information,userID,ct):
     c.insert_one(information)
 
 def db_connection():
-    mongoDB_conn = os.getenv('MONGODB_URL')
-    myclient = pymongo.MongoClient(mongoDB_conn)
-    db = myclient['7940_group']
-    col = db['chat_bot']
-    return col
-
+    try:
+        mongoDB_conn = os.getenv('MONGODB_URL')
+        myclient = pymongo.MongoClient(mongoDB_conn)
+        db = myclient['7940_group']
+        col = db['chat_bot']
+        return col
+    except Exception as e:
+        print(f"Error connecting to MongoDB: {e}")
+        return None
 
 
 def main():
